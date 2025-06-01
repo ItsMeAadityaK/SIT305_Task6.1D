@@ -17,6 +17,7 @@ import com.example.smartlearnapp.models.QuizQuestion;
 import com.example.smartlearnapp.models.QuizResponse;
 import com.google.gson.Gson;
 import java.util.List;
+import android.graphics.Typeface;
 
 public class ResultFragment extends Fragment {
 
@@ -35,9 +36,25 @@ public class ResultFragment extends Fragment {
         resultContainer = view.findViewById(R.id.quiz_container);
         btnContinue = view.findViewById(R.id.btn_continue);
 
-        // Set result container invisible initially for fade-in
-        resultContainer.setAlpha(0f);
+        // ✨ AI Label
+        TextView label = new TextView(getContext());
+        label.setText("✨ Answered by AI");
+        label.setTextColor(Color.CYAN);
+        label.setTextSize(14);
+        label.setTypeface(null, Typeface.ITALIC);
+        label.setPadding(0, 0, 0, 8);
+        resultContainer.addView(label);
 
+        // 🧠 Heading
+        TextView heading = new TextView(getContext());
+        heading.setText("Your Results");
+        heading.setTextColor(Color.BLACK);
+        heading.setTextSize(24);
+        heading.setTypeface(null, Typeface.BOLD);
+        heading.setPadding(0, 0, 0, 24);
+        resultContainer.addView(heading);
+
+        // Load and show answers
         SharedPreferences prefs = requireContext().getSharedPreferences("user_data", Context.MODE_PRIVATE);
         String quizJson = prefs.getString("last_quiz", null);
 
@@ -45,11 +62,7 @@ public class ResultFragment extends Fragment {
             try {
                 QuizResponse quizResponse = new Gson().fromJson(quizJson, QuizResponse.class);
                 if (quizResponse != null && quizResponse.getQuiz() != null) {
-                    Log.d("ResultFragment", "Total questions received: " + quizResponse.getQuiz().size());
                     showResults(quizResponse.getQuiz());
-
-                    // Animate fade-in after rendering results
-                    resultContainer.animate().alpha(1f).setDuration(500).start();
                 } else {
                     showError("Quiz data is missing or invalid.");
                 }
@@ -65,6 +78,8 @@ public class ResultFragment extends Fragment {
                 Navigation.findNavController(view).navigate(R.id.action_resultFragment_to_dashboardFragment)
         );
     }
+
+
 
     private void showResults(List<QuizQuestion> questions) {
         for (int i = 0; i < questions.size(); i++) {
