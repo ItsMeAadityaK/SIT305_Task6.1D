@@ -36,7 +36,7 @@ public class ResultFragment extends Fragment {
         resultContainer = view.findViewById(R.id.quiz_container);
         btnContinue = view.findViewById(R.id.btn_continue);
 
-        // ✨ AI Label
+
         TextView label = new TextView(getContext());
         label.setText("✨ Answered by AI");
         label.setTextColor(Color.CYAN);
@@ -45,7 +45,7 @@ public class ResultFragment extends Fragment {
         label.setPadding(0, 0, 0, 8);
         resultContainer.addView(label);
 
-        // 🧠 Heading
+
         TextView heading = new TextView(getContext());
         heading.setText("Your Results");
         heading.setTextColor(Color.BLACK);
